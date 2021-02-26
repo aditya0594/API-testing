@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:testSuite id="6a7014b2-37cc-41f7-9b32-b66bfd90e8ec" name="gorest" xmlns:con="http://eviware.com/soapui/config"><con:description>TestSuite generated for REST Service [https://gorest.co.in]</con:description><con:settings><con:setting id="6a7014b2-37cc-41f7-9b32-b66bfd90e8ecfileName">gorest</con:setting></con:settings><con:savedRecentRuns>1</con:savedRecentRuns><con:runType>SEQUENTIAL</con:runType><con:properties/><con:reportParameters/></con:testSuite>

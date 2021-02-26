@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:testCase id="6a113c57-afdd-454f-bc0d-42e2d236b0a7" failOnError="true" failTestCaseOnErrors="true" keepSession="false" maxResults="0" name="Users TestCase" searchProperties="true" xmlns:con="http://eviware.com/soapui/config"><con:description>TestCase generated for REST Resource [Users] located at [/public-api/users]</con:description><con:settings><con:setting id="IncludeOverview">true</con:setting><con:setting id="IncludeResults">true</con:setting><con:setting id="FlowLayout">false</con:setting><con:setting id="ErrorDetails">true</con:setting><con:setting id="IncludeCoverage">true</con:setting><con:setting id="GeneratableJUnitReport@Style">Multiple Pages</con:setting><con:setting id="GeneratableJUnitReport@Folder">E:\ReadyAPI\REPORTS</con:setting><con:setting id="6a113c57-afdd-454f-bc0d-42e2d236b0a7fileName">Users-TestCase</con:setting></con:settings><con:savedRecentRuns>1</con:savedRecentRuns><con:testStep type="groovy" name="Groovy Script" id="d078ab39-9cf1-4fb9-9d2e-a2a7382c2970"><con:settings/><con:config><script>// IMPORT THE LIBRARIES WE NEED
+
+import com.eviware.soapui.support.XmlHolder
+import jxl.*
+import jxl.write.*
+
+// DECLARE THE VARIABLES
+
+def myTestCase = context.testCase //myTestCase contains the test case
+
+def counter,next,previous,size //Variables used to handle the loop and to move inside the file
+
+Workbook workbook1 = Workbook.getWorkbook(new File("C:\\Testing\\hello.xls")) //file containing the data
+
+Sheet sheet1 = workbook1.getSheet(0) //Index 0 will read the first sheet from the workbook, you can also specify the sheet name with "Sheet1"
+//Sheet sheet1 = workbook1.getSheet("Sheet1")
+
+size= sheet1.getRows().toInteger() //get the number of rows, each row is a data set
+
+propTestStep = myTestCase.getTestStepByName("Properties") // get the Property TestStep object
+
+propTestStep.setPropertyValue("Total", size.toString())
+
+counter = propTestStep.getPropertyValue("Count").toString() //counter variable contains iteration number
+
+counter = counter.toInteger()
+
+next = (counter > size-2? 0: counter+1) //set the next value
+
+// OBTAINING THE DATA YOU NEED
+
+Cell f1 = sheet1.getCell(0,counter) // getCell(column,row) //obtains field1
+Cell f2 = sheet1.getCell(1,counter) // getCell(column,row) //obtains field2
+Cell f3 = sheet1.getCell(2,counter)
+Cell f4 = sheet1.getCell(3,counter)
+Cell f5 = sheet1.getCell(4,counter)
+Cell f6 = sheet1.getCell(5,counter)
+workbook1.close() //close the file
+
+////////////////////////////////////
+
+field1 = f1.getContents()
+field2 = f2.getContents()
+field3 = f3.getContents()
+field4 = f4.getContents()
+field5 = f5.getContents()
+field6 = f6.getContents()
+propTestStep.setPropertyValue("Field1", field1) //the value is saved in the property
+propTestStep.setPropertyValue("Field2", field2)
+propTestStep.setPropertyValue("Field3", field3)
+propTestStep.setPropertyValue("Field4", field4)//the value is saved in the property
+propTestStep.setPropertyValue("Field5", field5)
+propTestStep.setPropertyValue("Field6", field6)
+propTestStep.setPropertyValue("Count", next.toString()) //increase Count value
+
+next++ //increase next value
+
+propTestStep.setPropertyValue("Next", next.toString()) //set Next value on the properties step
+
+//Decide if the test has to be run again or not
+
+if (counter == size-1)
+
+{
+
+propTestStep.setPropertyValue("StopVal", "T")
+
+log.info "Setting the StopVal property now..."
+
+}
+
+else if (counter==0)
+
+{
+
+def runner = new com.eviware.soapui.impl.wsdl.testcase.WsdlTestCaseRunner(testRunner.testCase, null)
+
+propTestStep.setPropertyValue("StopVal", "F")
+
+}
+
+else
+
+{
+
+propTestStep.setPropertyValue("StopVal", "F")
+
+}</script></con:config></con:testStep><con:testStep type="properties" name="Properties" id="cfad1483-fa01-4ee7-a736-4c94c731558a"><con:settings/><con:config xsi:type="con:PropertiesStep" saveFirst="true" createMissingOnLoad="false" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:properties><con:property><con:name>Field1</con:name><con:value>user1 </con:value></con:property><con:property><con:name>Field2</con:name><con:value>user1@gmail.com</con:value></con:property><con:property><con:name>Total</con:name><con:value>5</con:value></con:property><con:property><con:name>Count</con:name><con:value>1</con:value></con:property><con:property><con:name>Next</con:name><con:value>2</con:value></con:property><con:property><con:name>Stopval</con:name><con:value>F</con:value></con:property><con:property><con:name>Field3</con:name><con:value>Male</con:value></con:property><con:property><con:name>Field4</con:name><con:value>Active</con:value></con:property><con:property><con:name>Field5</con:name><con:value>user1_update </con:value></con:property><con:property><con:name>Field6</con:name><con:value>user1_update@gmail.com</con:value></con:property></con:properties></con:config></con:testStep><con:testStep type="transfer" name="Transfer_add_User" id="cc67cfce-ddb8-481c-9c3c-b80ebd717328"><con:settings/><con:config xsi:type="con:PropertyTransfersStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:transfers setNullOnMissingSource="true" transferTextContent="true" failOnError="true" ignoreEmpty="false" transferToAll="false" entitize="false" transferChildNodes="false"><con:name>name</con:name><con:sourceType>Field1</con:sourceType><con:sourceStep>Properties</con:sourceStep><con:targetType>name</con:targetType><con:targetStep>add_user1</con:targetStep><con:upgraded>true</con:upgraded></con:transfers><con:transfers setNullOnMissingSource="true" transferTextContent="true" failOnError="true" ignoreEmpty="false" transferToAll="false" entitize="false" transferChildNodes="false"><con:name>email</con:name><con:sourceType>Field2</con:sourceType><con:sourceStep>Properties</con:sourceStep><con:targetType>email</con:targetType><con:targetStep>add_user1</con:targetStep><con:upgraded>true</con:upgraded></con:transfers><con:transfers setNullOnMissingSource="true" transferTextContent="true" failOnError="true" ignoreEmpty="false" transferToAll="false" entitize="false" transferChildNodes="false"><con:name>gender</con:name><con:sourceType>Field3</con:sourceType><con:sourceStep>Properties</con:sourceStep><con:targetType>gender</con:targetType><con:targetStep>add_user1</con:targetStep><con:upgraded>true</con:upgraded></con:transfers><con:transfers setNullOnMissingSource="true" transferTextContent="true" failOnError="true" ignoreEmpty="false" transferToAll="false" entitize="false" transferChildNodes="false"><con:name>Status</con:name><con:sourceType>Field4</con:sourceType><con:sourceStep>Properties</con:sourceStep><con:targetType>status</con:targetType><con:targetStep>add_user1</con:targetStep><con:upgraded>true</con:upgraded></con:transfers><con:transfers setNullOnMissingSource="true" transferTextContent="true" failOnError="true" ignoreEmpty="false" transferToAll="false" entitize="false" transferChildNodes="false"><con:name>Updated_name</con:name><con:sourceType>Field5</con:sourceType><con:sourceStep>Properties</con:sourceStep><con:targetType>name</con:targetType><con:targetStep>Update_user</con:targetStep><con:upgraded>true</con:upgraded></con:transfers><con:transfers setNullOnMissingSource="true" transferTextContent="true" failOnError="true" ignoreEmpty="false" transferToAll="false" entitize="false" transferChildNodes="false"><con:name>updated_email</con:name><con:sourceType>Field6</con:sourceType><con:sourceStep>Properties</con:sourceStep><con:targetType>email</con:targetType><con:targetStep>Update_user</con:targetStep><con:upgraded>true</con:upgraded></con:transfers></con:config></con:testStep><con:testStep type="restrequest" name="add_user1" id="bf28d732-68a8-4884-8d6c-9815080c0a52"><con:settings/><con:config service="https://gorest.co.in" resourcePath="/public-api/users/" methodName="Users 1" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="add_user1" id="b3757391-9011-4508-8cda-a43a46c655c6" mediaType="application/x-www-form-urlencoded" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>https://gorest.co.in</con:endpoint><con:request/><con:originalUri>https://gorest.co.in/public-api/users</con:originalUri><con:assertion type="Simple Contains" id="84578f63-5fb4-42d9-a5fc-c3f65a918dd5" name="Contains" disabled="true"><con:configuration><token>Male
+</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:credentials><con:username>hello</con:username><con:selectedAuthProfile>Profile 3</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><con:entry key="gender" value="Male"/><con:entry key="name" value="user1 "/><con:entry key="email" value="user1@gmail.com"/><con:entry key="status" value="Active"/></con:parameters><con:parameterOrder/></con:restRequest></con:config></con:testStep><con:testStep type="transfer" name="Property Transfer" id="4a0ca53a-174f-46b2-84e2-39a00f1dfc82"><con:settings/><con:config xsi:type="con:PropertyTransfersStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:transfers setNullOnMissingSource="true" transferTextContent="true" failOnError="true" ignoreEmpty="false" transferToAll="true" entitize="false" transferChildNodes="false"><con:name>id</con:name><con:sourceType>Response</con:sourceType><con:sourceStep>add_user1</con:sourceStep><con:sourcePath>data.id</con:sourcePath><con:targetType>var</con:targetType><con:targetStep>Get_user</con:targetStep><con:targetPath/><con:type>JSONPATH</con:type><con:targetTransferType>JSONPATH</con:targetTransferType><con:upgraded>true</con:upgraded></con:transfers></con:config></con:testStep><con:testStep type="restrequest" name="Get_user" id="52e632a1-ae20-4c90-9fdc-fd748fff3a0a"><con:settings/><con:config service="https://gorest.co.in" resourcePath="/public-api/users/{var}" methodName="Get_users" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Get_user" id="6cb59482-2bc4-4ebd-b63b-44a474f87918" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;entry key="hdfh]" value="testtse" xmlns="http://eviware.com/soapui/config"/></con:setting></con:settings><con:endpoint>https://gorest.co.in</con:endpoint><con:request>1505</con:request><con:originalUri>https://gorest.co.in/public-api/users/1606</con:originalUri><con:assertion type="Simple Contains" id="38bf5cb6-1f25-4b4b-a20a-ec9a4ef260dd" name="Contains"><con:configuration><token>200</token><ignoreCase>false</ignoreCase><useRegEx>false</useRegEx></con:configuration></con:assertion><con:assertion type="JsonPath Match" id="d216c8af-cba0-401a-bbad-66885c0c2f8a" name="JsonPath Match" disabled="true"><con:configuration><path>.data[0].name</path><content>paul</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:domain>1505</con:domain><con:selectedAuthProfile>No Authorization</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><con:entry key="var" value="1645"/></con:parameters><con:parameterOrder><con:entry>var</con:entry></con:parameterOrder></con:restRequest></con:config></con:testStep><con:testStep type="transfer" name="Properties_update" id="bd8b6d5f-b861-42b5-a9f6-79e0abe41765"><con:settings/><con:config xsi:type="con:PropertyTransfersStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:transfers setNullOnMissingSource="true" transferTextContent="true" failOnError="true" ignoreEmpty="false" transferToAll="false" entitize="false" transferChildNodes="false"><con:name>Get_id</con:name><con:sourceType>Response</con:sourceType><con:sourceStep>Get_user</con:sourceStep><con:sourcePath>data.id</con:sourcePath><con:targetType>var</con:targetType><con:targetStep>Update_user</con:targetStep><con:type>JSONPATH</con:type><con:targetTransferType>XPATH</con:targetTransferType><con:upgraded>true</con:upgraded></con:transfers><con:transfers setNullOnMissingSource="true" transferTextContent="true" failOnError="true" ignoreEmpty="false" transferToAll="false" entitize="false" transferChildNodes="false"><con:name>update_name</con:name><con:sourceType>Field5</con:sourceType><con:sourceStep>Properties</con:sourceStep><con:sourcePath/><con:targetType>name</con:targetType><con:targetStep>Update_user</con:targetStep><con:type>XPATH</con:type><con:upgraded>true</con:upgraded></con:transfers><con:transfers setNullOnMissingSource="true" transferTextContent="true" failOnError="true" ignoreEmpty="false" transferToAll="false" entitize="false" transferChildNodes="false"><con:name>updated_email</con:name><con:sourceType>Field6</con:sourceType><con:sourceStep>Properties</con:sourceStep><con:sourcePath/><con:targetType>email</con:targetType><con:targetStep>Update_user</con:targetStep><con:type>XPATH</con:type><con:upgraded>true</con:upgraded></con:transfers></con:config></con:testStep><con:testStep type="restrequest" name="Update_user" id="29b522ba-6668-4f11-92c7-de324e5207d2"><con:settings/><con:config service="https://gorest.co.in" resourcePath="/public-api/users/{var}" methodName="1606 1" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Update_user" id="45abe768-661c-4347-be35-c86004ad6e3b" mediaType="application/x-www-form-urlencoded" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>https://gorest.co.in</con:endpoint><con:request/><con:originalUri>https://gorest.co.in/public-api/users/1606</con:originalUri><con:assertion type="GroovyScriptAssertion" id="cd1351a3-99f7-467a-bde9-a631cfa695b7" name="Script Assertion"><con:configuration/></con:assertion><con:assertion type="GroovyScriptAssertion" id="e63b1b2b-93b4-4972-8313-a8572aedda9f" name="Script Assertion 2" disabled="true"><con:configuration><scriptText>import groovy.json.JsonSlurper
+//grab the responce from the api 
+
+boolean flag = true;
+
+def response = messageExchange.response.requestContent;
+
+def json1=jsonSlurper().parsetext(response);
+
+if(json1 == "created_at")
+{
+	flag=true; 
+}
+assert	true == flag; 
+</scriptText></con:configuration></con:assertion><con:assertion type="XPath Match" id="e68a391b-2043-45a6-ae7f-ca1187caa64f" name="XPath Match"><con:configuration><path>declare namespace ns1='https://gorest.co.in/public-api/users/1606';
+//ns1:Response[1]/ns1:data[1]/ns1:email[1]</path><content>${Properties#Field6}</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>Profile 1</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><con:entry key="Upated_name" value="testing12309_update"/><con:entry key="Update_email" value="testing12309@gmail.com"/><con:entry key="var" value="1645"/><con:entry key="name" value="user1_update "/><con:entry key="email" value="user1_update@gmail.com"/></con:parameters><con:parameterOrder><con:entry>var</con:entry><con:entry>Upated_name</con:entry><con:entry>Update_email</con:entry></con:parameterOrder></con:restRequest></con:config></con:testStep><con:testStep type="transfer" name="Property_delete" id="9a06d797-4f4e-4e55-8751-90c965748475"><con:settings/><con:config xsi:type="con:PropertyTransfersStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:transfers setNullOnMissingSource="true" transferTextContent="true" failOnError="true" ignoreEmpty="false" transferToAll="false" entitize="false" transferChildNodes="false"><con:name>Delete_user</con:name><con:sourceType>var</con:sourceType><con:sourceStep>Get_user</con:sourceStep><con:sourcePath/><con:targetType>var</con:targetType><con:targetStep>Delete_Users</con:targetStep><con:type>JSONPATH</con:type><con:targetTransferType>JSONPATH</con:targetTransferType><con:upgraded>true</con:upgraded></con:transfers></con:config></con:testStep><con:testStep type="restrequest" name="Delete_Users" id="72af1f54-2db0-439b-b5ed-bdb107da0c84"><con:settings/><con:config service="https://gorest.co.in" resourcePath="/public-api/users/{var}" methodName="Var 1" xsi:type="con:RestRequestStep" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><con:restRequest name="Delete_Users" id="7fe1b535-3940-49f1-a7af-2bc32faed7ab" mediaType="application/json" postQueryString="false"><con:settings><con:setting id="com.eviware.soapui.impl.wsdl.WsdlRequest@request-headers">&lt;xml-fragment/></con:setting></con:settings><con:endpoint>https://gorest.co.in</con:endpoint><con:request/><con:originalUri>https://gorest.co.in/public-api/</con:originalUri><con:assertion type="JsonPath Match" id="9c0dd543-d1e6-4c0d-8f80-fffd73077e77" name="Match content of [code]"><con:configuration><path>$['code']</path><content>204</content><allowWildcards>false</allowWildcards><ignoreNamspaceDifferences>false</ignoreNamspaceDifferences><ignoreComments>false</ignoreComments></con:configuration></con:assertion><con:credentials><con:selectedAuthProfile>Profile 1</con:selectedAuthProfile><con:authType>No Authorization</con:authType></con:credentials><con:jmsConfig JMSDeliveryMode="PERSISTENT"/><con:jmsPropertyConfig/><con:parameters><con:entry key="var" value="1645"/></con:parameters><con:parameterOrder><con:entry/><con:entry>var</con:entry></con:parameterOrder></con:restRequest></con:config></con:testStep><con:testStep type="groovy" name="Groovy_loop" id="4afdd2be-ea97-4b65-a074-a8ff6cd87a4f"><con:settings/><con:config><script>def myTestCase = context.testCase
+def runner
+
+propTestStep = myTestCase.getTestStepByName("Properties") // get the Property TestStep
+
+endLoop = propTestStep.getPropertyValue("StopVal").toString()
+
+if (endLoop.toString() == "T" || endLoop.toString()=="True" || endLoop.toString()=="true")
+
+{
+
+log.info ("Exit Groovy Data Source Looper")
+
+assert true
+
+}
+
+else
+
+{
+
+testRunner.gotoStepByName("GroovyScript") //setStartStep
+
+}</script></con:config></con:testStep><con:properties/><con:reportParameters/><con:breakPoints><con:testStepId>d078ab39-9cf1-4fb9-9d2e-a2a7382c2970</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>cfad1483-fa01-4ee7-a736-4c94c731558a</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>cc67cfce-ddb8-481c-9c3c-b80ebd717328</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>bf28d732-68a8-4884-8d6c-9815080c0a52</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>4a0ca53a-174f-46b2-84e2-39a00f1dfc82</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>52e632a1-ae20-4c90-9fdc-fd748fff3a0a</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>bd8b6d5f-b861-42b5-a9f6-79e0abe41765</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>29b522ba-6668-4f11-92c7-de324e5207d2</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>9a06d797-4f4e-4e55-8751-90c965748475</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>72af1f54-2db0-439b-b5ed-bdb107da0c84</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints><con:breakPoints><con:testStepId>4afdd2be-ea97-4b65-a074-a8ff6cd87a4f</con:testStepId><con:status>NONE</con:status><con:properties/></con:breakPoints></con:testCase>

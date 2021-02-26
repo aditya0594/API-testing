@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:interface xsi:type="con:RestService" id="c345c618-a8a3-4f68-a878-71e9aeb06f88" wadlVersion="http://wadl.dev.java.net/2009/02" name="http://api.mocki.io" type="rest" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:con="http://eviware.com/soapui/config"><con:settings><con:setting id="c345c618-a8a3-4f68-a878-71e9aeb06f88fileName">http%3A%2F%2Fapi.mocki.io</con:setting></con:settings><con:definitionCache/><con:endpoints><con:endpoint>http://api.mocki.io</con:endpoint></con:endpoints></con:interface>

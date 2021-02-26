@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<con:testSuite id="6d1f9c67-b1df-482d-9356-c47b7611b0e9" name="TestSuite 1" xmlns:con="http://eviware.com/soapui/config"><con:settings><con:setting id="6d1f9c67-b1df-482d-9356-c47b7611b0e9fileName">TestSuite-1</con:setting></con:settings><con:runType>PARALLELL</con:runType><con:properties/><con:reportParameters/></con:testSuite>
